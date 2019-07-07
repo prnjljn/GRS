@@ -20,9 +20,10 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
     EditText mSearchBoxEditText;
     TextView mUrlDisplayTextView;
-    TextView  mSearchResultsTextView;
+    TextView mSearchResultsTextView;
     private TextView mErrorMessageTextView;
     private ProgressBar mPbView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         mPbView = findViewById(R.id.pbar);
         mErrorMessageTextView = findViewById(R.id.error_view);
     }
+
     private void makeGithubSearchQuery() {
         String githubQuery = mSearchBoxEditText.getText().toString();
         URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
@@ -40,17 +42,20 @@ public class MainActivity extends AppCompatActivity {
         new GithubQueryTask().execute(githubSearchUrl);
 
     }
-    private void showJsonDataView(){
+
+    private void showJsonDataView() {
         mErrorMessageTextView.setVisibility(View.INVISIBLE);
         mSearchResultsTextView.setVisibility(View.VISIBLE);
     }
-    private void showErrorMessage(){
+
+    private void showErrorMessage() {
         mSearchResultsTextView.setVisibility(View.INVISIBLE);
         mErrorMessageTextView.setVisibility(View.VISIBLE);
     }
-    public class GithubQueryTask extends AsyncTask<URL,Void,String> {
+
+    public class GithubQueryTask extends AsyncTask<URL, Void, String> {
         @Override
-        protected String doInBackground(URL... params){
+        protected String doInBackground(URL... params) {
             URL searchUrl = params[0];
             String githubSearchResults = null;
             try {
@@ -67,18 +72,20 @@ public class MainActivity extends AppCompatActivity {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
                 mSearchResultsTextView.setText(githubSearchResults);
                 showJsonDataView();
-            }else{
+            } else {
                 showErrorMessage();
             }
         }
     }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
     @Override
-    public  boolean  onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.action_search) {
             makeGithubSearchQuery();
