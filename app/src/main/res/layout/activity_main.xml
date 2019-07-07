@@ -1,46 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp">
 
 
     <EditText
+        android:id="@+id/search_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/search_box"
-        android:textSize="22sp"
-        android:hint="Enter the Query and Click Search"/>
+        android:hint="Enter the Query and Click Search"
+        android:textSize="22sp" />
 
 
     <TextView
+        android:id="@+id/url_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/url_view"
-        android:textSize="22sp"
         android:layout_marginTop="8dp"
         android:text="Search url  will show up here"
-        />
+        android:textSize="22sp" />
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        >
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/results_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Results will be displayed here"
+                android:textSize="18sp" />
+
+        </ScrollView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/results_view"
-            android:textSize="18sp"
-            android:text="Results will be displayed here"/>
-
-    </ScrollView>
-
+            android:id="@+id/error_view"
+            android:padding="16dp"
+            android:text="@string/error"
+            android:textSize="22sp"
+            android:visibility="invisible"/>
+        <ProgressBar
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:id="@+id/pbar"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+    </FrameLayout>
 
 
 </LinearLayout>

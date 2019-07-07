@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     EditText mSearchBoxEditText;
     TextView mUrlDisplayTextView;
     TextView  mSearchResultsTextView;
+    private TextView mErrorMessageTextView;
+    private ProgressBar mPbView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,14 +30,23 @@ public class MainActivity extends AppCompatActivity {
         mSearchBoxEditText = findViewById(R.id.search_box);
         mUrlDisplayTextView = findViewById(R.id.url_view);
         mSearchResultsTextView = findViewById(R.id.results_view);
+        mPbView = findViewById(R.id.pbar);
+        mErrorMessageTextView = findViewById(R.id.error_view);
     }
     private void makeGithubSearchQuery() {
         String githubQuery = mSearchBoxEditText.getText().toString();
         URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
         mUrlDisplayTextView.setText(githubSearchUrl.toString());
-        String githubSearchResults = null;
         new GithubQueryTask().execute(githubSearchUrl);
 
+    }
+    private void showJsonDataView(){
+        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+        mSearchResultsTextView.setVisibility(View.VISIBLE);
+    }
+    private void showErrorMessage(){
+        mSearchResultsTextView.setVisibility(View.INVISIBLE);
+        mErrorMessageTextView.setVisibility(View.VISIBLE);
     }
     public class GithubQueryTask extends AsyncTask<URL,Void,String> {
         @Override
@@ -50,8 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String githubSearchResults) {
+            mPbView.setVisibility(View.INVISIBLE);
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
                 mSearchResultsTextView.setText(githubSearchResults);
+                showJsonDataView();
+            }else{
+                showErrorMessage();
             }
         }
     }
@@ -64,9 +81,7 @@ public class MainActivity extends AppCompatActivity {
     public  boolean  onOptionsItemSelected(MenuItem item){
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.action_search) {
-            Context context = MainActivity.this;
-            String textToShow = "Search clicked";
-            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+            makeGithubSearchQuery();
             return true;
         }
         return super.onOptionsItemSelected(item);
